@@ -1,50 +1,20 @@
-# OCPP
+# OCPP 1.6 client for browsers
 
-Typescript package implementing the JSON version of the Open Charge Point Protocol (OCPP). Currently OCPP 1.6 is supported.
-
-Open Charge Point Protocol (OCPP, <http://www.openchargealliance.org/>) is a communication protocol between multiple charging stations ("charge points") and a single management software ("central system").
+This is a modified version of [`ocpp-ts`](https://github.com/sepych/ocpp-ts) focused on working in the browser.
 
 ## Installation
 ```
-npm i ocpp-ts
+npm install --save-dev browser-ocpp-client
 ```
 
 ## Usage
-
-### Central System
-
-```ts
-import {
-  OcppServer, OcppClientConnection, BootNotificationRequest, BootNotificationResponse,
-} from 'ocpp-ts';
-
-const centralSystemSimple = new OcppServer();
-centralSystemSimple.listen(9220);
-centralSystemSimple.on('connection', (client: OcppClientConnection) => {
-  console.log(`Client ${client.getCpId()} connected`);
-  client.on('close', (code: number, reason: Buffer) => {
-    console.log(`Client ${client.getCpId()} closed connection`, code, reason.toString());
-  });
-
-  client.on('BootNotification', (request: BootNotificationRequest, cb: (response: BootNotificationResponse) => void) => {
-    const response: BootNotificationResponse = {
-      status: 'Accepted',
-      currentTime: new Date().toISOString(),
-      interval: 60,
-    };
-    cb(response);
-  });
-});
-```
-
-### Charging Point
 
 ```ts
 import {
   BootNotificationRequest,
   BootNotificationResponse,
-  OcppClient, OcppError,
-} from 'ocpp-ts';
+  OcppBrowserClient, OcppError,
+} from 'browser-ocpp-client';
 
 const chargingPointSimple = new OcppClient('CP1111');
 chargingPointSimple.on('error', (err: Error) => {
@@ -73,34 +43,3 @@ chargingPointSimple.on('connect', async () => {
 });
 chargingPointSimple.connect('ws://localhost:9220/');
 ```
-
-## Security
-
-Add required certificates for Central System, note from OCPP protocol:
-
-*As some Charge Point implementations are using embedded systems with limited computing
-resources, we impose an additional restriction on the TLS configuration on the server side:*
-
-* The TLS certificate SHALL be an RSA certificate with a size no greater than 2048 bytes
-
-```ts
-centralSystemSimple.on('authorization', (cbId: string, req: IncomingMessage, cb: (err?: Error) => void) => {
-  console.log('authorization', cbId, req.headers.authorization);
-  // validate authorization header
-  // cb(new Error('Unathorized')); // Deny
-  cb(); // Accept
-});
-centralSystemSimple.listen(9220, {
-  cert: fs.readFileSync('cert.pem'),
-  key: fs.readFileSync('key.pem'),
-});
-```
-
-If the central system requires authorization, an authorization header can be placed as the second parameter.
-
-```ts
-chargingPointSimple.connect('wss://eparking.fi/ocpp/', {
-  Authorization: getBasicAuth(),
-});
-```
-

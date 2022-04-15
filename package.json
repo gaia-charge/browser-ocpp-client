@@ -1,7 +1,7 @@
 {
-  "name": "ocpp-ts",
+  "name": "browser-ocpp-client",
   "version": "0.3.1",
-  "description": "OCPP 1.6: Open Charge Point Protocol",
+  "description": "OCPP 1.6 client for browsers",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
@@ -18,15 +18,22 @@
     "websocket"
   ],
   "author": "Evgeni Gordejev",
+  "maintainers": [
+    {
+      "name": "Wojtek Siudzinski",
+      "email": "wojtek@gaiagreen.tech",
+      "url": "https://gaiagreen.tech"
+    }
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sepych/ocpp-ts/issues"
+    "url": "https://github.com/gaia-green-tech/browser-ocpp-client/issues"
   },
-  "homepage": "https://github.com/sepych/ocpp-ts",
+  "homepage": "https://github.com/gaia-green-tech/browser-ocpp-client",
   "dependencies": {
     "ajv": "^6.12.6",
-    "uuid": "^8.3.2",
-    "ws": "^8.3.0"
+    "events": "^3.3.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",

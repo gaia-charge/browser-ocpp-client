@@ -1,6 +1,4 @@
 import EventEmitter from 'events';
-import { OutgoingHttpHeaders } from 'http';
-import WebSocket from 'ws';
 import { Protocol } from './Protocol';
 import { OCPP_PROTOCOL_1_6 } from './schemas';
 
@@ -29,32 +27,22 @@ export class Client extends EventEmitter {
     throw new Error('Charging point not connected to central system');
   }
 
-  protected connect(centralSystemUrl: string, headers?: OutgoingHttpHeaders) {
-    const ws = new WebSocket(centralSystemUrl + this.getCpId(), [OCPP_PROTOCOL_1_6], {
-      perMessageDeflate: false,
-      protocolVersion: 13,
-      headers,
-    });
+  protected connect(centralSystemUrl: string) {
+    const ws = new WebSocket(centralSystemUrl + this.getCpId(), [OCPP_PROTOCOL_1_6]);
 
-    ws.on('upgrade', (res) => {
-      if (!res.headers['sec-websocket-protocol']) {
-        this.emit('error', new Error(`Server doesn't support protocol ${OCPP_PROTOCOL_1_6}`));
-      }
-    });
-
-    ws.on('close', (code: number, reason: Buffer) => {
+    ws.addEventListener('close', (event: CloseEvent): any => {
       this.setConnection(null);
-      this.emit('close', code, reason);
+      this.emit('close', event.code, event.reason);
     });
 
-    ws.on('open', () => {
+    ws.addEventListener('open', () => {
       if (ws) {
         this.setConnection(new Protocol(this, ws));
         this.emit('connect');
       }
     });
 
-    ws.on('error', (err) => {
+    ws.addEventListener('error', (err) => {
       this.emit('error', err);
     });
   }

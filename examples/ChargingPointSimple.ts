@@ -1,10 +1,10 @@
 import {
   BootNotificationRequest,
   BootNotificationResponse,
-  OcppClient, OcppError,
+  OcppBrowserClient, OcppError,
 } from '../src';
 
-const chargingPointSimple = new OcppClient('CP1111');
+const chargingPointSimple = new OcppBrowserClient('CP1111');
 chargingPointSimple.on('error', (err: Error) => {
   console.log(err.message);
 });

@@ -1,10 +1,10 @@
 import {
-  OcppError, OcppClient, BootNotificationRequest, BootNotificationResponse, StartTransactionRequest, StartTransactionResponse,
+  OcppError, OcppBrowserClient, BootNotificationRequest, BootNotificationResponse, StartTransactionRequest, StartTransactionResponse,
 } from '../src';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const cp = new OcppClient('CP1111');
+const cp = new OcppBrowserClient('CP1111');
 cp.on('error', (err: Error) => {
   console.log(err.message);
 });

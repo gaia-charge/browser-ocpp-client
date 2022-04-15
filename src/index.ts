@@ -1,12 +1,8 @@
 import { OcppError } from './impl/OcppError';
-import { OcppServer } from './OcppServer';
-import { OcppClient } from './OcppClient';
-import { OcppClientConnection } from './OcppClientConnection';
+import { OcppBrowserClient } from './OcppBrowserClient';
 
 export * from './types';
 export {
-  OcppServer,
-  OcppClientConnection,
-  OcppClient,
+  OcppBrowserClient,
   OcppError,
 };

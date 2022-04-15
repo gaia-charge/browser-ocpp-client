@@ -1,6 +1,5 @@
-import WebSocket from 'ws';
 import { v4 as uuidv4 } from 'uuid';
-import EventEmitter from 'events';
+import type EventEmitter from 'events';
 import schemas from './schemas';
 import {
   ERROR_INTERNALERROR,
@@ -23,8 +22,8 @@ export class Protocol {
   constructor(eventEmitter: EventEmitter, socket: WebSocket) {
     this.eventEmitter = eventEmitter;
     this.socket = socket;
-    this.socket.on('message', (message) => {
-      this.onMessage(message.toString());
+    this.socket.addEventListener('message', (message) => {
+      this.onMessage(message.data);
     });
   }
 

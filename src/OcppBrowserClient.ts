@@ -1,5 +1,4 @@
-import { OutgoingHttpHeaders } from 'http';
-import {
+import type {
   AuthorizeRequest,
   AuthorizeResponse,
   BootNotificationRequest,
@@ -57,11 +56,11 @@ import {
   UpdateFirmwareRequest,
   UpdateFirmwareResponse,
 } from './types';
-import { Client } from './impl/Client';
+import { Client } from './impl/BrowserClient';
 
-export class OcppClient extends Client {
-  connect(centralSystemUrl: string, headers?: OutgoingHttpHeaders) {
-    super.connect(centralSystemUrl, headers);
+export class OcppBrowserClient extends Client {
+  connect(centralSystemUrl: string) {
+    super.connect(centralSystemUrl);
   }
 
   on(event: 'CancelReservation', listener: (request: CancelReservationRequest, cb: (response: CancelReservationResponse) => void) => void): this;
